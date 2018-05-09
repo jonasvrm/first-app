@@ -1,0 +1,64 @@
+<script>
+    $(function () {
+
+        loadAll();
+
+        $("#OrganisationContainer").on("click", ".BtnDelete", function () {
+            var deleteId = $(this).attr("data-id");
+
+            deleteDialog({
+                onConfirm: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "/organisation/delete/" + $(this).attr("data-id"),
+                        data: {
+                            _csrf: $("#csrfToken").val()
+                        },
+                        success: function (content) {
+                            loadAll();
+                        }
+                    });
+                }
+            });           
+        });
+
+        $("#OrganisationContainer").on("click", ".BtnEdit", function () {
+            location.href = "/organisation/edit/" + $(this).attr("data-id");          
+        });
+
+        $("#BtnAdd").on("click", function () {
+            location.href = "/organisation/add";
+        });
+
+    });
+
+    var loadAll = function () {
+        $.ajax({
+            type: "GET",
+            url: "/organisation/all/",
+            data: {
+                _csrf: $("#csrfToken").val()
+            },
+            success: function (html, err) {
+                if (html) {
+                    $("#OrganisationContainer").html(html);
+                } else {
+                    
+                }
+                
+            }
+        });
+    }
+</script>
+
+<input type="hidden" name="csrfToken" id="csrfToken" value="{{ csrfToken }}" />
+<div class="row top-buffer">
+    <div class="col-lg-2 offset-lg-10">
+        <button class="btn btn-block btn-primary" id="BtnAdd">Add Org</button>
+    </div>  
+</div>
+<div class="row top-buffer">
+    <div class="col-lg-12" id="OrganisationContainer">
+
+    </div>
+</div>

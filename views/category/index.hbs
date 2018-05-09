@@ -1,0 +1,58 @@
+<script>
+    $(function () {
+
+        loadAll();
+
+        $("#CategoryContainer").on("click", ".BtnDelete", function () {
+            $.ajax({
+                type: "POST",
+                url: "/category/delete/" + $(this).attr("data-id"),
+                data: {
+                    _csrf: $("#csrfToken").val()
+                },
+                success: function (content) {
+                    loadAll();
+                }
+            });
+        });
+
+        $("#CategoryContainer").on("click", ".BtnEdit", function () {
+            location.href = "/category/edit/" + $(this).attr("data-id");          
+        });
+
+        $("#BtnAdd").on("click", function () {
+            location.href = "/category/add";
+        });
+
+    });
+
+    var loadAll = function () {
+        $.ajax({
+            type: "GET",
+            url: "/category/all/",
+            data: {
+                _csrf: $("#csrfToken").val()
+            },
+            success: function (html, err) {
+                if (html) {
+                    $("#CategoryContainer").html(html);
+                } else {
+                    
+                }
+                
+            }
+        });
+    }
+</script>
+
+<input type="hidden" name="csrfToken" id="csrfToken" value="{{ csrfToken }}" />
+<div class="row top-buffer">
+    <div class="col-lg-2 offset-lg-10">
+        <button class="btn btn-block btn-primary" id="BtnAdd">Add Category</button>
+    </div>  
+</div>
+<div class="row top-buffer">
+    <div class="col-lg-12" id="CategoryContainer">
+
+    </div>
+</div>

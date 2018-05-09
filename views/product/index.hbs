@@ -1,0 +1,64 @@
+<script>
+    $(function () {
+
+        loadAllProducts();
+
+        $("#ProductContainer").on("click", ".BtnDelete", function () {
+            var deleteId = $(this).attr("data-id");
+
+            deleteDialog({
+                onConfirm: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "/product/delete/" + deleteId,
+                        data: {
+                            _csrf: $("#csrfToken").val()
+                        },
+                        success: function (content) {
+                            loadAllProducts();
+                        }
+                    });
+                }
+            });
+        });
+
+        $("#ProductContainer").on("click", ".BtnEdit", function () {
+            location.href = "/product/edit/" + $(this).attr("data-id");          
+        });
+
+        $("#BtnAdd").on("click", function () {
+            location.href = "/product/add";
+        });
+
+    });
+
+    var loadAllProducts = function () {
+        $.ajax({
+            type: "GET",
+            url: "/product/all/",
+            data: {
+                _csrf: $("#csrfToken").val()
+            },
+            success: function (html, err) {
+                if (html) {
+                    $("#ProductContainer").html(html);
+                } else {
+                    
+                }
+                
+            }
+        });
+    }
+</script>
+
+<input type="hidden" name="csrfToken" id="csrfToken" value="{{ csrfToken }}" />
+<div class="row top-buffer">
+    <div class="col-lg-2 offset-lg-10">
+        <button class="btn btn-block btn-primary" id="BtnAdd">Add product</button>
+    </div>  
+</div>
+<div class="row top-buffer">
+    <div class="col-lg-12" id="ProductContainer">
+
+    </div>
+</div>
