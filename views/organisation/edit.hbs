@@ -4,6 +4,10 @@
             <label for="inputEmail4">Name</label>
             <input type="text" class="form-control" id="name" name="name" value="{{ organisation.name }}" placeholder="Name">
         </div>
+        <div class="form-group col-md-6">
+            <label for="inputEmail4">User</label>
+            <input type="text" class="form-control" id="user" name="user" value="" placeholder="User ID">
+        </div>
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />

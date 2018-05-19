@@ -2,6 +2,8 @@
 var router = express.Router();
 var csrf = require('csurf');
 var Organisation = require('../models/organisation');
+var ObjectID = require('mongoose').Types.ObjectId;
+
 
 var csrfProtect = csrf();
 router.use(csrfProtect);
@@ -35,12 +37,17 @@ router.get('/edit/:id', function (req, res, next) {
 /* UPDATE the Organisation */
 router.post('/edit/:id', function (req, res, next) {
     var org = {
-        name: req.body.name
+        name: req.body.name,
+        users: []
     };
+
+    if(ObjectID.isValid(req.body.user)){
+        org.users.push(req.body.user);
+    }    
 
     Organisation.findByIdAndUpdate(req.params.id, org, function (err, result) {
         if (err) {
-
+            res.render('error', { message: err.message });
         } else {
             res.redirect('/organisation/index');
         }

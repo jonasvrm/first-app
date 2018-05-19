@@ -14,7 +14,7 @@ router.get('/index', function (req, res, next) {
 /* GET all categories */
 router.get('/all', function (req, res, next) {
 
-    Category.find({}, function (err, categories) {
+    Category.find({ user: req.user.id }, function (err, categories) {
         var categoryArray = [];
 
         categories.forEach(function (category) {
@@ -55,7 +55,8 @@ router.get('/add', function (req, res, next) {
 /* INSERT new category */
 router.post('/add', function (req, res, next) {
     var org = new Category({
-        name: req.body.name
+        name: req.body.name,
+        user: req.user.id
     });
 
     org.save(function (err, result) {

@@ -12,7 +12,6 @@ var bodyParser = require('body-parser');
 var validator = require('express-validator');
 var MongoStore = require('connect-mongo')(session);
 
-
 /* DB */
 mongoose.connect('mongodb://localhost:27017/dbcontext');
 require('./config/passport');

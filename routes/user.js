@@ -19,8 +19,6 @@ router.post('/signup', passport.authenticate(
 	    successRedirect: '/user/profile',
 	    failureRedirect: '/user/signup',
         failureFlash: true
-    }, function(req, res, next) {
-        req.session.userId = req.user.id;
     }
 ));
 
@@ -36,8 +34,6 @@ router.post('/signin', passport.authenticate(
         successRedirect: '/user/profile',
         failureRedirect: '/user/signin',
         failureFlash: true
-    }, function (req, res, next) {
-        req.session.userId = req.user.id;
     }
 ));
 

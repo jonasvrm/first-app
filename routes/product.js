@@ -16,7 +16,7 @@ router.get('/index', function (req, res, next) {
 router.get('/all', async (req, res, next) => {
 
     try {
-        var products = await Product.find({}).populate("categories").exec();
+        var products = await Product.find({ user: req.user.id }).populate("categories").exec();
         let productArray = [];
 
         products.forEach(function (product) {
@@ -35,7 +35,7 @@ router.get('/edit/:id', async (req, res, next) => {
     try {
         var product = await Product.findById(req.params.id);
         //pass available categories to view   
-        var categories = await Category.find({});
+        var categories = await Category.find({ user: req.user.id });
         var categoryArray = [];
 
         categories.forEach(function (cat) {
@@ -88,7 +88,8 @@ router.get('/add', function (req, res, next) {
 router.post('/add', function (req, res, next) {
     var product = new Product({
         name: req.body.name,
-        price: req.body.price
+        price: req.body.price,
+        user: req.user.id
     });
 
     product.categories.push(req.body.categoryId);
