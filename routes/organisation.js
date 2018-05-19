@@ -36,21 +36,23 @@ router.get('/edit/:id', function (req, res, next) {
 
 /* UPDATE the Organisation */
 router.post('/edit/:id', function (req, res, next) {
-    var org = {
-        name: req.body.name,
-        users: []
-    };
 
-    if(ObjectID.isValid(req.body.user)){
-        org.users.push(req.body.user);
-    }    
+    Organisation.findById(req.params.id, function(err, organisation) {
+      
+        organisation.name = req.body.name;
 
-    Organisation.findByIdAndUpdate(req.params.id, org, function (err, result) {
-        if (err) {
-            res.render('error', { message: err.message });
-        } else {
-            res.redirect('/organisation/index');
-        }
+        if(ObjectID.isValid(req.body.user)){
+            organisation.users.push(req.body.user);
+        }    
+
+        // Using a promise rather than a callback
+        organisation.save(function(err) {
+            if (err) {
+                res.render('error', { message: err.message });
+            } else {
+                res.redirect('/organisation/index');
+            }
+        });
     });
 });
 

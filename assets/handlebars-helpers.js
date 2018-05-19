@@ -18,13 +18,15 @@ module.exports = {
     validationError: function (errors) {
         
         if (errors.length > 0) {
-            var errorAlert = "<div class='alert alert-danger'>";
+            var errorAlert = "<div class='alert alert-danger fade' data-dismiss='alert'>";
+            errorAlert = errorAlert + "<button type='button' class='close' data-dismiss='alert' aria-label='Close'> <span aria-hidden='true'>&times;</span> </button><ul>";
 
             errors.forEach(function (error) {
-                errorAlert = errorAlert + "<p>" + error + "</p>";
+                errorAlert = errorAlert + "<li>" + error + "</li>";
+                errorAlert = errorAlert + "<li>" + error + "</li>";
             });
 
-            errorAlert = errorAlert + "</div>";
+            errorAlert = errorAlert + "</ul></div>";
 
             return errorAlert;
         }

@@ -6,7 +6,7 @@ var Organisation = require('./organisation');
 var userSchema = new Schema({
     email: {type: String, required: true},
     password: {type: String, required: true},
-    organisations: [{ type: Schema.Types.ObjectId, ref: 'Organisation' }]
+    organisation: { type: Schema.Types.ObjectId, ref: 'Organisation' }
 });
 
 userSchema.methods.encryptPassword = function(password){

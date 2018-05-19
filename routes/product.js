@@ -14,9 +14,8 @@ router.get('/index', function (req, res, next) {
 
 /* GET all products */
 router.get('/all', async (req, res, next) => {
-
     try {
-        var products = await Product.find({ user: req.user.id }).populate("categories").exec();
+        var products = await Product.find({ organisation: req.user.organisation }).populate("categories").populate("organisation").exec();
         let productArray = [];
 
         products.forEach(function (product) {
@@ -24,7 +23,7 @@ router.get('/all', async (req, res, next) => {
         });
 
         res.render('product/all', { layout: false, products: productArray });
-    } catch (e) {
+    } catch (err) {
         res.render('error', { message: err });
     }
 });
@@ -52,19 +51,33 @@ router.get('/edit/:id', async (req, res, next) => {
 router.post('/edit/:id', async (req, res, next) => {
 
     try {
+        //validation
+        req.checkBody('name', 'Invalid Name').notEmpty();
+        req.checkBody('price', 'Invalid Price').notEmpty().isNumber();
+        var errors = req.validationErrors();
+        if (errors) {
+            var messages = [];
+            errors.forEach(function (error) {
+                messages.push(error.msg);
+            });
+            res.redirect('product/edit/'+req.params.id, req.flash('error', messages));
+        }
 
-        var product = {
-            name: req.body.name,
-            price: req.body.price,
-            categories: []
-        };
+        //load old product
+        var product = await Product.findById(req.params.id);
+
+        //apply new values
+        product.name = req.body.name;
+        product.price = req.body.price;
 
         product.categories.push(req.body.categoryId);
 
-        await Product.findByIdAndUpdate(req.params.id, product);
-        res.redirect('../index');
+        // Using a promise rather than a callback
+        await product.save();
 
-    } catch (e) {
+        res.redirect('/product/all');
+
+    } catch (err) {
         res.render('error', { message: err });
     }
 });
@@ -89,7 +102,8 @@ router.post('/add', function (req, res, next) {
     var product = new Product({
         name: req.body.name,
         price: req.body.price,
-        user: req.user.id
+        user: req.user.id,
+        organisation: req.user.organisation
     });
 
     product.categories.push(req.body.categoryId);
