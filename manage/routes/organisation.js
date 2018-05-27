@@ -1,7 +1,7 @@
 ﻿var express = require('express');
 var router = express.Router();
 var csrf = require('csurf');
-var Organisation = require('../models/organisation');
+var Organisation = require(__base + 'models/organisation');
 var ObjectID = require('mongoose').Types.ObjectId;
 
 

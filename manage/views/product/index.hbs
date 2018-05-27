@@ -10,7 +10,7 @@
                 onConfirm: function () {
                     $.ajax({
                         type: "POST",
-                        url: "/product/delete/" + deleteId,
+                        url: "{{ __manageUrl }}/product/delete/" + deleteId,
                         data: {
                             _csrf: $("#csrfToken").val()
                         },
@@ -23,11 +23,11 @@
         });
 
         $("#ProductContainer").on("click", ".BtnEdit", function () {
-            location.href = "/product/edit/" + $(this).attr("data-id");          
+            location.href = "{{ __manageUrl }}/product/edit/" + $(this).attr("data-id");          
         });
 
         $("#BtnAdd").on("click", function () {
-            location.href = "/product/add";
+            location.href = "{{ __manageUrl }}/product/add";
         });
 
     });
@@ -35,7 +35,7 @@
     var loadAllProducts = function () {
         $.ajax({
             type: "GET",
-            url: "/product/all/",
+            url: "{{ __manageUrl }}/product/all/",
             data: {
                 _csrf: $("#csrfToken").val()
             },

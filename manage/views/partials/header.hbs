@@ -9,17 +9,17 @@
                     Setup
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/product/index">Products</a>
-                    <a class="dropdown-item" href="/category/index">Categories</a>
+                    <a class="dropdown-item" href="/manage/product/index">Products</a>
+                    <a class="dropdown-item" href="/manage/category/index">Categories</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Something else here</a>
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/user/all">Users</a>
+                <a class="nav-link" href="/manage/user/all">Users</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/organisation/index">Orgs</a>
+                <a class="nav-link" href="{{__manageUrl}}/organisation/index">Orgs</a>
             </li>
         </ul>
         
@@ -27,17 +27,17 @@
         <ul class="navbar-nav ml-auto">
             {{#if login}}
             <li class="nav-item pull-right">
-                <a class="nav-link" href="/user/profile">My Account</a>
+                <a class="nav-link" href="/manage/user/profile">My Account</a>
             </li>
             <li class="nav-item pull-right">
-                <a class="nav-link" href="/user/logout">Sign out</a>
+                <a class="nav-link" href="/manage/user/logout">Sign out</a>
             </li>
             {{else}}
             <li class="nav-item pull-right">
-                <a class="nav-link" href="/user/signup">Sign up</a>
+                <a class="nav-link" href="/manage/user/signup">Sign up</a>
             </li>
             <li class="nav-item pull-right">
-                <a class="nav-link" href="/user/signin">Login</a>
+                <a class="nav-link" href="/manage/user/signin">Login</a>
             </li>
             {{/if}}
         </ul>

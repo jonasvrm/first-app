@@ -17,12 +17,11 @@ module.exports = {
     },
     validationError: function (errors) {
         
-        if (errors.length > 0) {
-            var errorAlert = "<div class='alert alert-danger fade' data-dismiss='alert'>";
-            errorAlert = errorAlert + "<button type='button' class='close' data-dismiss='alert' aria-label='Close'> <span aria-hidden='true'>&times;</span> </button><ul>";
+        if (errors && errors.length > 0) {
+            var errorAlert = "<div class='alert alert-danger fade show'>";
+            errorAlert = errorAlert + "<button type='button' class='close' data-dismiss='alert' aria-label='Close'> <span aria-hidden='true'>&times;</span> </button><ul class='mb-0'>";
 
             errors.forEach(function (error) {
-                errorAlert = errorAlert + "<li>" + error + "</li>";
                 errorAlert = errorAlert + "<li>" + error + "</li>";
             });
 

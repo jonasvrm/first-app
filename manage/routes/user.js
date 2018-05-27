@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var csrf = require('csurf');
 var passport = require('passport');
-var User = require('../models/user');
+var User = require(__base + 'models/user');
 
 var csrfProtect = csrf();
 router.use(csrfProtect);
@@ -16,8 +16,8 @@ router.get('/signup', function (req, res, next) {
 router.post('/signup', passport.authenticate(
     'local.signup',
     {
-	    successRedirect: '/user/profile',
-	    failureRedirect: '/user/signup',
+	    successRedirect: __manageUrl + '/user/profile',
+	    failureRedirect: __manageUrl + '/user/signup',
         failureFlash: true
     }
 ));
@@ -31,8 +31,8 @@ router.get('/signin', function (req, res, next) {
 router.post('/signin', passport.authenticate(
     'local.signin',
     {
-        successRedirect: '/user/profile',
-        failureRedirect: '/user/signin',
+        successRedirect: __manageUrl + '/user/profile',
+        failureRedirect: __manageUrl + '/user/signin',
         failureFlash: true
     }
 ));

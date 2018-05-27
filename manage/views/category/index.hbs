@@ -6,7 +6,7 @@
         $("#CategoryContainer").on("click", ".BtnDelete", function () {
             $.ajax({
                 type: "POST",
-                url: "/category/delete/" + $(this).attr("data-id"),
+                url: "{{ __manageUrl }}/category/delete/" + $(this).attr("data-id"),
                 data: {
                     _csrf: $("#csrfToken").val()
                 },
@@ -17,11 +17,11 @@
         });
 
         $("#CategoryContainer").on("click", ".BtnEdit", function () {
-            location.href = "/category/edit/" + $(this).attr("data-id");          
+            location.href = "{{ __manageUrl }}/category/edit/" + $(this).attr("data-id");          
         });
 
         $("#BtnAdd").on("click", function () {
-            location.href = "/category/add";
+            location.href = "{{ __manageUrl }}/category/add";
         });
 
     });
@@ -29,7 +29,7 @@
     var loadAll = function () {
         $.ajax({
             type: "GET",
-            url: "/category/all/",
+            url: "{{ __manageUrl }}/category/all/",
             data: {
                 _csrf: $("#csrfToken").val()
             },

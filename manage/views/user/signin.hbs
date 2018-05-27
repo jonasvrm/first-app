@@ -1,8 +1,7 @@
 <div class="row">
     <div class="col-lg-4 offset-lg-4 col-md-4 offset-md-4">
-        <h1>Sign Up</h1>
-        {{{validationError errors}}}
-        <form action="/user/signup" method="POST">
+        <h1>Sign In</h1>
+        <form action="/manage/user/signin" method="POST">
             <div class="form-group">
                 <label for="email">E-Mail</label>
                 <input type="email" id="email" name="email" class="form-control">
@@ -11,7 +10,7 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" class="form-control">
             </div>
-            <button type="submit" class="form-control">Sign Up</button>
+            <button type="submit" class="form-control">Sign In</button>
             <input type="hidden" name="_csrf" value="{{ csrfToken }}">
         </form>
     </div>

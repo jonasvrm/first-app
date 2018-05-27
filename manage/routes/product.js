@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var csrf = require('csurf');
-var Product = require('../models/product');
-var Category = require('../models/category');
+var Product = require(__base + 'models/product');
+var Category = require(__base + 'models/category');
 
 var csrfProtect = csrf();
 router.use(csrfProtect);
@@ -55,12 +55,13 @@ router.post('/edit/:id', async (req, res, next) => {
         req.checkBody('name', 'Invalid Name').notEmpty();
         req.checkBody('price', 'Invalid Price').notEmpty().isNumber();
         var errors = req.validationErrors();
+
         if (errors) {
             var messages = [];
             errors.forEach(function (error) {
                 messages.push(error.msg);
             });
-            res.redirect('product/edit/'+req.params.id, req.flash('error', messages));
+            res.redirect(__manage + '/product/edit/'+req.params.id, req.flash('error', messages));
         }
 
         //load old product
@@ -75,7 +76,7 @@ router.post('/edit/:id', async (req, res, next) => {
         // Using a promise rather than a callback
         await product.save();
 
-        res.redirect('/product/all');
+        res.redirect( __manage + '/product/all');
 
     } catch (err) {
         res.render('error', { message: err });
@@ -112,7 +113,7 @@ router.post('/add', function (req, res, next) {
         if (err) {
             res.json({ message: err });
         } else {
-            res.redirect('/product/index');
+            res.redirect( __manage + '/product/index');
         }
     });
 });
