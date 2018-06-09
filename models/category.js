@@ -8,8 +8,8 @@ var categorySchema = new Schema({
 });
 
 categorySchema.methods.validateOrg = function(id){
-    if (this.organisation.id != id) {
-        throw { message: "Invalid organistion" };
+    if (!this.organisation.id.equals(id)) {
+        throw { message: "There was an error validating your session login." };
     }
 };
 

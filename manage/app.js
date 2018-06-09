@@ -11,6 +11,7 @@ var cflash = require('connect-flash');
 var bodyParser = require('body-parser');
 var validator = require('express-validator');
 var MongoStore = require('connect-mongo')(session);
+var intl = require('intl');
 
 /* DB */
 mongoose.connect('mongodb://localhost:27017/dbcontext');

@@ -9,7 +9,7 @@ router.use(csrfProtect);
 
 /* GET main page */
 router.get('/index', function (req, res, next) {
-    res.render('product/index', { title: 'Products', csrfToken: req.csrfToken() });
+    res.render('product/index', { title: 'Products', errors: req.flash('error'), csrfToken: req.csrfToken() });
 });
 
 /* GET all products */
@@ -23,8 +23,8 @@ router.get('/all', async (req, res, next) => {
         });
 
         res.render('product/all', { layout: false, products: productArray });
-    } catch (err) {
-        res.render('error', { message: err });
+    } catch (error) {
+        res.render('error', { message: error });
     }
 });
 
@@ -34,26 +34,29 @@ router.get('/edit/:id', async (req, res, next) => {
     try {
         var product = await Product.findById(req.params.id);
         //pass available categories to view   
-        var categories = await Category.find({ user: req.user.id });
+        var categories = await Category.find({ organisation: req.user.organisation });
         var categoryArray = [];
 
         categories.forEach(function (cat) {
             categoryArray.push(cat);
         });
 
-        res.render('product/edit', { product: product, categories: categoryArray, csrfToken: req.csrfToken() });
-    } catch (e) {
-        res.render('error', { message: err });
+        res.render('product/edit', { product: product, categories: categoryArray, errors: req.flash('error'), csrfToken: req.csrfToken() });
+    } catch (error) {
+        req.flash('error', error.message)
+        res.redirect(__manageUrl + '/product/index');
     }
 });
 
 /* UPDATE the product */
 router.post('/edit/:id', async (req, res, next) => {
 
+    console.log(req.body.price.toLocaleString('de-DE'));
+
     try {
         //validation
         req.checkBody('name', 'Invalid Name').notEmpty();
-        req.checkBody('price', 'Invalid Price').notEmpty().isNumber();
+        req.checkBody('price', 'Invalid Price').notEmpty().isDecimal();
         var errors = req.validationErrors();
 
         if (errors) {
@@ -65,7 +68,11 @@ router.post('/edit/:id', async (req, res, next) => {
         }
 
         //load old product
-        var product = await Product.findById(req.params.id);
+        try {
+            var product = await Product.findById(req.params.id);
+        } catch (error) {
+            throw new Error("Product not found");
+        }
 
         //apply new values
         product.name = req.body.name;
@@ -76,10 +83,11 @@ router.post('/edit/:id', async (req, res, next) => {
         // Using a promise rather than a callback
         await product.save();
 
-        res.redirect( __manage + '/product/all');
+        res.redirect( __manage + '/product/index');
 
-    } catch (err) {
-        res.render('error', { message: err });
+    } catch (error) {
+        req.flash('error', error.message)
+        res.redirect(__manageUrl + '/product/edit/' + req.params.id);
     }
 });
 
@@ -99,23 +107,21 @@ router.get('/add', function (req, res, next) {
 });
 
 /* INSERT new product */
-router.post('/add', function (req, res, next) {
-    var product = new Product({
-        name: req.body.name,
-        price: req.body.price,
-        user: req.user.id,
-        organisation: req.user.organisation
-    });
-
-    product.categories.push(req.body.categoryId);
-
-    product.save(function (err, result) {
-        if (err) {
-            res.json({ message: err });
-        } else {
-            res.redirect( __manage + '/product/index');
-        }
-    });
+router.post('/add', async (req, res, next) => {
+    try {
+        var product = new Product({
+            name: req.body.name,
+            price: req.body.price,
+            user: req.user.id,
+            organisation: req.user.organisation
+        });
+    
+        product.categories.push(req.body.categoryId);
+        await product.save();
+        res.redirect(__manageUrl + '/product/index');
+    } catch (error) {
+        res.render('product/add', req.flash('error', error));
+    }   
 });
 
 /* DELETE one product */

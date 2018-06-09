@@ -29,5 +29,12 @@ module.exports = {
 
             return errorAlert;
         }
+    },
+    currency: function (number) {
+        
+        if (number) {
+            var convertedNumber = new Intl.NumberFormat('de-DE').format(number);
+            return convertedNumber;
+        }
     }
 }

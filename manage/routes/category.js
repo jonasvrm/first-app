@@ -99,12 +99,11 @@ router.post('/add', async (req, res, next) => {
 router.post('/delete/:id', async (req, res, next) => {
     var message;
 
-    Category.findByIdAndRemove(req.params.id, function (err) {
-        if (err)
-            message = err;
-        else
-            message = "Success";
-    });
+    var err = await Category.findByIdAndRemove(req.params.id);
+    if (err)
+        message = err;
+    else
+        message = "Success";
 
     res.json({ message: message });
 

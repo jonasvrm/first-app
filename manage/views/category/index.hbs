@@ -4,16 +4,23 @@
         loadAll();
 
         $("#CategoryContainer").on("click", ".BtnDelete", function () {
-            $.ajax({
-                type: "POST",
-                url: "{{ __manageUrl }}/category/delete/" + $(this).attr("data-id"),
-                data: {
-                    _csrf: $("#csrfToken").val()
-                },
-                success: function (content) {
-                    loadAll();
+            var deleteId = $(this).attr("data-id");
+
+            deleteDialog({
+                onConfirm: function () {
+                   $.ajax({
+                        type: "POST",
+                        url: "{{ __manageUrl }}/category/delete/" + deleteId,
+                        data: {
+                            _csrf: $("#csrfToken").val()
+                        },
+                        success: function (content) {
+                            loadAll();
+                        }
+                    });
                 }
             });
+            
         });
 
         $("#CategoryContainer").on("click", ".BtnEdit", function () {
